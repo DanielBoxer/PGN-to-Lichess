@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="preload">
+    <h1>Options</h1>
+
+    <div class="options-section">
+      <div class="label-container">
+        <label>Chess name</label>
+        <span class="tooltip-icon">
+          ?
+          <span class="tooltip-text">
+            This will determine the side from which you will view the imported
+            PGN.
+          </span>
+        </span>
+      </div>
+      <input type="text" id="chessName" />
+    </div>
+
+    <div class="options-section">
+      <div class="label-container">
+        <label>Remove tags</label>
+        <span class="tooltip-icon">
+          ?
+          <span class="tooltip-text">
+            Remove all unnecessary tags from the PGN.
+          </span>
+        </span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="removeTags" />
+        <span class="slider round"></span>
+      </label>
+    </div>
+  </body>
+
+  <script src="options.js"></script>
+</html>

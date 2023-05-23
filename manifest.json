@@ -1,0 +1,22 @@
+{
+    "manifest_version": 2,
+    "name": "PGN to Lichess",
+    "version": "1.0",
+    "description": "Quickly open selected PGNs in Lichess",
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "options_ui": {
+        "page": "index.html"
+    },
+    "permissions": [
+        "menus",
+        "notifications",
+        "storage"
+    ],
+    "icons": {
+        "48": "lichess.png"
+    }
+}
