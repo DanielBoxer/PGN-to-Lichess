@@ -7,7 +7,7 @@ let selectionInfo = {
 const notifyUser = (id, message) => {
   browser.notifications.create(id, {
     type: "basic",
-    iconUrl: browser.extension.getURL("lichess.png"),
+    iconUrl: browser.runtime.getURL("lichess.png"),
     title: "PGN to Lichess",
     message: message,
   });
