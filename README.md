@@ -1,6 +1,10 @@
 # PGN to Lichess
 
-Easily open PGNs in Lichess by selecting text and using the context menu.
+Download at <https://addons.mozilla.org/addon/pgn-to-lichess>
+
+Easily open PGNs in Lichess by selecting text and using the context menu. The PGN will be opened in a new tab.
+
+You can use this on any PGN, for example on Chess.com if you want to analyse your game for free.
 
 |       |       |
 | :---: | :---: |
