@@ -14,9 +14,10 @@ const notifyUser = (id, message) => {
 };
 
 const request = async (url, method, errMsg, body = null) => {
+  // need to specify response format as json
   const options = {
     method,
-    headers: {},
+    headers: { Accept: "application/json" },
   };
   if (body) {
     options.headers["Content-Type"] = "application/x-www-form-urlencoded";
