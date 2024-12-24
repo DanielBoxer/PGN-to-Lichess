@@ -36,6 +36,41 @@
         <span class="slider round"></span>
       </label>
     </div>
+
+    <div class="options-section">
+      <div class="label-container">
+        <label>Prevent invalid PGNs</label>
+        <span class="tooltip-icon">
+          ?
+          <span class="tooltip-text">
+            Don't send the PGN to Lichess if it doesn't appear to be in the
+            right format. If notifications are on, show a popup to allow the
+            user to send anyways.
+          </span>
+        </span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="preventInvalid" />
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+    <div class="options-section">
+      <div class="label-container">
+        <label>Display notifications (recommended)</label>
+        <span class="tooltip-icon">
+          ?
+          <span class="tooltip-text">
+            Display a clickable popup when the PGN is invalid. Also display any
+            error messages.
+          </span>
+        </span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="displayNotifs" />
+        <span class="slider round"></span>
+      </label>
+    </div>
   </body>
 
   <script src="options.js"></script>

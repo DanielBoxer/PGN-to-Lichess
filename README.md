@@ -10,7 +10,7 @@ This add-on can also open your Chess.com games in Lichess without having to sele
 
 |       |       |       |
 | :---: | :---: | :---: |
-![PGN 1](https://github.com/DanielBoxer/PGN-to-Lichess/assets/65575771/b21fb69c-493f-4ad9-984b-ed5ff829bb43) | ![PGN 2](https://github.com/DanielBoxer/PGN-to-Lichess/assets/65575771/620089ed-bb25-49b9-a3cc-7eb4024f7031) | ![Chess.com to Lichess](https://github.com/DanielBoxer/PGN-to-Lichess/assets/65575771/311b09a5-a362-435a-85e9-aa8e92f920b1)
+| ![PGN 1](https://github.com/DanielBoxer/PGN-to-Lichess/assets/65575771/b21fb69c-493f-4ad9-984b-ed5ff829bb43) | ![PGN 2](https://github.com/DanielBoxer/PGN-to-Lichess/assets/65575771/620089ed-bb25-49b9-a3cc-7eb4024f7031) | ![Chess.com to Lichess](https://github.com/DanielBoxer/PGN-to-Lichess/assets/65575771/311b09a5-a362-435a-85e9-aa8e92f920b1) |
 
 Imported PGNs will be opened with the correct side for both puzzles and regular games.
 

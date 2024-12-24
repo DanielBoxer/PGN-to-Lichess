@@ -1,16 +1,27 @@
-let selectionInfo = {
+const selectionInfo = {
   pgn: null,
   side: null,
   tabIdx: null,
 };
 
-const notifyUser = (id, message) => {
-  browser.notifications.create(id, {
-    type: "basic",
-    iconUrl: browser.runtime.getURL("lichess.png"),
-    title: "PGN to Lichess",
-    message: message,
+const shouldNotify = async () => {
+  const options = await browser.storage.sync.get("displayNotifs");
+  const isNotifOn = options.displayNotifs;
+  const hasPermission = await browser.permissions.contains({
+    permissions: ["notifications"],
   });
+  return isNotifOn && hasPermission;
+};
+
+const notifyUser = async (id, message) => {
+  if (await shouldNotify()) {
+    browser.notifications.create(id, {
+      type: "basic",
+      iconUrl: browser.runtime.getURL("lichess.png"),
+      title: "PGN to Lichess",
+      message: message,
+    });
+  }
 };
 
 const request = async (url, method, errMsg, body = null) => {
@@ -27,7 +38,7 @@ const request = async (url, method, errMsg, body = null) => {
   try {
     const resp = await fetch(url, options);
     if (!resp.ok) {
-      notifyUser(
+      await notifyUser(
         "requestError",
         `${errMsg}: ${resp.status} ${resp.statusText}`
       );
@@ -37,7 +48,7 @@ const request = async (url, method, errMsg, body = null) => {
     const data = await resp.json();
     return data;
   } catch (error) {
-    notifyUser("requestError", error.message);
+    await notifyUser("requestError", error.message);
     return null;
   }
 };
@@ -60,9 +71,14 @@ const sendToLichess = async (pgn, side, tabIdx) => {
 };
 
 const processPGN = async (pgn, tab) => {
-  const options = await browser.storage.sync.get(["chessName", "removeTags"]);
+  const options = await browser.storage.sync.get([
+    "chessName",
+    "removeTags",
+    "preventInvalid",
+  ]);
   const chessName = options.chessName || "";
   const removeTags = options.removeTags || false;
+  const preventInvalid = options.preventInvalid || false;
 
   if (removeTags) {
     // remove all tags except for these ones
@@ -80,9 +96,10 @@ const processPGN = async (pgn, tab) => {
   }
 
   // remove all non letter chars from tag names
-  pgn = pgn.replace(/\[(.*?)\s/g, function (_, match) {
-    return "[" + match.replace(/[^a-zA-Z]/g, "") + " ";
-  });
+  pgn = pgn.replace(
+    /\[(.*?)\s/g,
+    (_, match) => "[" + match.replace(/[^a-zA-Z]/g, "") + " "
+  );
 
   // add unknown date tag if not found
   if (!/\[Date\s*".*"\]/.test(pgn)) {
@@ -109,11 +126,9 @@ const processPGN = async (pgn, tab) => {
   }
 
   // store data in case selection isn't like a pgn
-  selectionInfo = {
-    pgn: pgn,
-    side: side,
-    tabIdx: tab.index + 1,
-  };
+  selectionInfo.pgn = pgn;
+  selectionInfo.side = side;
+  selectionInfo.tabIdx = tab.index + 1;
 
   // test if selection follows pgn format
   const tag = /\[\w+\s+"[^"]*"\]\s*/.source;
@@ -125,10 +140,10 @@ const processPGN = async (pgn, tab) => {
     `^(${tag})*(((${moveNum}(${move}){1,2}${comment})*)${gameEnd})?$`
   );
 
-  if (pgnRegex.test(pgn)) {
+  if (pgnRegex.test(pgn) || !preventInvalid) {
     await sendToLichess(pgn, side, tab.index + 1);
   } else {
-    notifyUser(
+    await notifyUser(
       "notPGN",
       "Selection doesn't look like a PGN! Click here to open anyway."
     );
@@ -138,7 +153,7 @@ const processPGN = async (pgn, tab) => {
 const getRecentPGN = async () => {
   const options = await browser.storage.sync.get(["chessName"]);
   if (!options.chessName) {
-    notifyUser(
+    await notifyUser(
       "noChessName",
       "Please specify your Chess.com username in the options."
     );
@@ -158,7 +173,7 @@ const getRecentPGN = async () => {
   }
 
   if (!data.games.length) {
-    notifyUser("noGames", "No recent games found.");
+    await notifyUser("noGames", "No recent games found.");
     return null;
   }
 
@@ -178,13 +193,27 @@ browser.menus.onClicked.addListener(async (info, tab) => {
   }
 });
 
-browser.notifications.onClicked.addListener(async (id) => {
-  if (id === "notPGN") {
-    await sendToLichess(
-      selectionInfo.pgn,
-      selectionInfo.side,
-      selectionInfo.tabIdx
-    );
+const setupNotificationListener = async () => {
+  if (await shouldNotify()) {
+    browser.notifications.onClicked.addListener(async (id) => {
+      if (id === "notPGN") {
+        await sendToLichess(
+          selectionInfo.pgn,
+          selectionInfo.side,
+          selectionInfo.tabIdx
+        );
+      }
+    });
+  }
+};
+
+// if permission already granted, setup listener
+setupNotificationListener();
+
+// if permission granted at runtime, setup listener
+browser.permissions.onAdded.addListener(async (permissions) => {
+  if (permissions.permissions.includes("notifications")) {
+    await setupNotificationListener();
   }
 });
 

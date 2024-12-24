@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
     "name": "PGN to Lichess",
-    "version": "1.1.1",
-    "description": "Quickly open selected PGNs in Lichess",
+    "version": "1.1.2",
+    "description": "Quickly open PGNs and Chess.com games in Lichess",
     "background": {
         "scripts": [
             "background.js"
@@ -13,8 +13,10 @@
     },
     "permissions": [
         "menus",
-        "notifications",
         "storage"
+    ],
+    "optional_permissions": [
+        "notifications"
     ],
     "icons": {
         "256": "lichess.png"
