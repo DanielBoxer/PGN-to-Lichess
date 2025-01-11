@@ -25,6 +25,16 @@ const restoreOptions = async () => {
   selectors.removeTags.checked = res.removeTags || false;
   selectors.preventInvalid.checked = res.preventInvalid || false;
   selectors.displayNotifs.checked = res.displayNotifs || false;
+
+  setDisabledPreventInvalid(!selectors.displayNotifs.checked);
+};
+
+const setDisabledPreventInvalid = (shouldDisable) => {
+  selectors.preventInvalid.disabled = shouldDisable;
+  if (shouldDisable) {
+    // uncheck when disabled
+    selectors.preventInvalid.checked = false;
+  }
 };
 
 const requestPermission = async () => {
@@ -35,6 +45,7 @@ const requestPermission = async () => {
     if (!permission) {
       // uncheck if permission denied
       selectors.displayNotifs.checked = false;
+      setDisabledPreventInvalid(true);
     }
   } catch (error) {
     console.error("Error requesting notifications permission: ", error);
@@ -49,12 +60,15 @@ selectors.displayNotifs.addEventListener("change", (event) => {
   if (event.target.checked) {
     requestPermission();
   }
+  setDisabledPreventInvalid(!event.target.checked);
   saveOptions();
 });
+
 // listener for when the user revokes permission after enabling notifications
 browser.permissions.onRemoved.addListener((permissions) => {
   if (permissions.permissions.includes("notifications")) {
     selectors.displayNotifs.checked = false;
+    setDisabledPreventInvalid(true);
     saveOptions();
   }
 });

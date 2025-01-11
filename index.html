@@ -14,7 +14,7 @@
           ?
           <span class="tooltip-text">
             This will determine the side from which you will view the imported
-            PGN.
+            PGN. You can set this to your Chess.com username.
           </span>
         </span>
       </div>
@@ -27,12 +27,30 @@
         <span class="tooltip-icon">
           ?
           <span class="tooltip-text">
-            Remove all unnecessary tags from the PGN.
+            Remove all unnecessary tags from the PGN before sending to Lichess.
           </span>
         </span>
       </div>
       <label class="switch">
         <input type="checkbox" id="removeTags" />
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+    <div class="options-section">
+      <div class="label-container">
+        <label>Display info messages (recommended)</label>
+        <span class="tooltip-icon">
+          ?
+          <span class="tooltip-text"
+            >Show info and error messages as notifications. Also display a
+            clickable popup when the PGN is invalid if "Prevent invalid PGNs" is
+            on.
+          </span>
+        </span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="displayNotifs" />
         <span class="slider round"></span>
       </label>
     </div>
@@ -51,23 +69,6 @@
       </div>
       <label class="switch">
         <input type="checkbox" id="preventInvalid" />
-        <span class="slider round"></span>
-      </label>
-    </div>
-
-    <div class="options-section">
-      <div class="label-container">
-        <label>Display notifications (recommended)</label>
-        <span class="tooltip-icon">
-          ?
-          <span class="tooltip-text">
-            Display a clickable popup when the PGN is invalid. Also display any
-            error messages.
-          </span>
-        </span>
-      </div>
-      <label class="switch">
-        <input type="checkbox" id="displayNotifs" />
         <span class="slider round"></span>
       </label>
     </div>

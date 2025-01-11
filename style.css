@@ -95,6 +95,16 @@ input:checked + .slider:before {
 .preload .slider:before {
   transition: none !important;
 }
+input[type="checkbox"]:disabled + .slider {
+  background-color: #777;
+  cursor: not-allowed;
+}
+input[type="checkbox"]:disabled + .slider:before {
+  background-color: #555;
+}
+input[type="checkbox"]:disabled + .slider.round {
+  opacity: 0.5;
+}
 
 .label-container {
   display: flex;
