@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "PGN to Lichess",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "description": "Quickly open PGNs and Chess.com games in Lichess",
     "background": {
         "scripts": [
@@ -24,7 +24,7 @@
     "browser_specific_settings": {
         "gecko": {
             "id": "{12cadbbb-b6db-4196-8261-020291c0c502}",
-            "strict_min_version": "57.0"
+            "strict_min_version": "59.0"
         }
     }
 }
