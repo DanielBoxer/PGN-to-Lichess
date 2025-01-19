@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      increment:
+        description: "Which part of the version to increment"
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+        default: "patch"
+        required: true
+
+      version:
+        description: "Override version increment"
+        required: false
+
+env:
+  PACKAGE_NAME: "PGN-to-Lichess"
+  INCLUDED_FILES: "background.js index.html LICENSE lichess.png manifest.json options.js style.css"
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get Next Version
+        id: get_version
+        uses: danielboxer/next-version-action@v1.0.0
+        with:
+          increment: ${{ github.event.inputs.increment }}
+          version: ${{ github.event.inputs.version }}
+          use_v_prefix: true
+
+      - name: Zip folder
+        run: zip -r ${{ env.PACKAGE_NAME }}.zip ${{ env.INCLUDED_FILES }}
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.get_version.outputs.new_version }}
+          files: ${{ env.PACKAGE_NAME }}.zip
